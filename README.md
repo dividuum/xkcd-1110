@@ -1,8 +1,8 @@
 xkcd-map.rent-a-geek.de code and info
 =====================================
 
-If you have not seen the site: It's a zoomable version of the comic
-xkcd 1110 (http://xkcd.com/1110/).
+If you have not seen [the site](http://xkcd-map.rent-a-geek.de): It's a
+zoomable version of the comic xkcd 1110 (http://xkcd.com/1110/).
 
 Here is the code that runs on xkcd-map.rent-a-geek.de. It includes the
 script necessary for converting the 2048x2048 sized xkcd tiles into the
@@ -89,6 +89,8 @@ Numbers
 
 The site generated ~300k visits (I don't have exact numbers, since
 access.logs where disabled and I only added analytics later).
+
+I estimate the number of total requests received to be around 500 million.
 
 At peak time the 100Mbit connection of my server was saturated. Here is the
 output (stripped) of varnishstat (I restarted varnish several times to flush
