@@ -87,10 +87,10 @@ This will start gunicorn. It will fork 10 worker processes each handling
 Numbers
 -------
 
-The site generated ~450k visits (I don't have exact numbers, since
+The site generated ~600k visits (I don't have exact numbers, since
 access.logs where disabled and I only added analytics later).
 
-I estimate the number of total requests received to be around 700 million.
+I estimate the number of total requests received to be around 900 million.
 
 At peak time the 100Mbit connection of my server was saturated. Here is the
 output (stripped) of varnishstat (I restarted varnish several times to flush
@@ -150,10 +150,10 @@ the tile cache):
                2         0.00         0.00 Connection dropped late
             5621         1.00         1.00 Client uptime
 
-Total traffic so far is around 650 GB. Since 10 TB is included for my
+Total traffic so far is around 800GB. Since 10 TB is included for my
 server, that's not a problem. 
 
-It would have cost me around $700 had I used cloudfront :-)
+It would have cost me around $900 had I used cloudfront :-)
 
 I tried [coralcdn](http://www.coralcdn.org/) at peak time for 5% of all
 visitors. It generated too many 503 responses so I disabled it again.
