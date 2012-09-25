@@ -157,3 +157,95 @@ It would have cost me around $900 had I used cloudfront :-)
 
 I tried [coralcdn](http://www.coralcdn.org/) at peak time for 5% of all
 visitors. It generated too many 503 responses so I disabled it again.
+
+Aftermath
+---------
+
+After the request rate went down I updated the setup again. Now it only
+requires nginx which I have running anyway. 
+
+I'm using a regex rule for the upper half of each zoom level. If the requested
+tile if not available it falls back to the the white default png. In the last
+rule, which then matches all remaining requests for tiles, it falls back to the
+black default tile.
+
+I generated the regex patterns with a simple "range to regex" tool (r2r.c) I
+wrote 10 years ago :-)
+
+Here is the nginx config:
+
+    server {
+        listen 80;
+        server_name xkcd-map.rent-a-geek.de xkcd-static.rent-a-geek.de xkcd1.rent-a-geek.de xkcd2.rent-a-geek.de;
+
+        location ~ ^/converted/((1-[0-9]*-(0)).png)$ {
+            alias /var/www/xkcd-map.rent-a-geek.de/converted/$1;
+            error_page 404 =200 /white.png;
+            expires max;
+        }
+
+        location ~ ^/converted/((2-[0-9]*-([01])).png)$ {
+            alias /var/www/xkcd-map.rent-a-geek.de/converted/$1;
+            error_page 404 =200 /white.png;
+            expires max;
+        }
+
+        location ~ ^/converted/((3-[0-9]*-([0-3])).png)$ {
+            alias /var/www/xkcd-map.rent-a-geek.de/converted/$1;
+            error_page 404 =200 /white.png;
+            expires max;
+        }
+
+        location ~ ^/converted/((4-[0-9]*-([0-7])).png)$ {
+            alias /var/www/xkcd-map.rent-a-geek.de/converted/$1;
+            error_page 404 =200 /white.png;
+            expires max;
+        }
+
+        location ~ ^/converted/((5-[0-9]*-(([0-9])|1([0-5]))).png)$ {
+            alias /var/www/xkcd-map.rent-a-geek.de/converted/$1;
+            error_page 404 =200 /white.png;
+            expires max;
+        }
+
+        location ~ ^/converted/((6-[0-9]*-(([0-9])|[12][0-9]|3([01]))).png)$ {
+            alias /var/www/xkcd-map.rent-a-geek.de/converted/$1;
+            error_page 404 =200 /white.png;
+            expires max;
+        }
+
+        location ~ ^/converted/((7-[0-9]*-(([0-9])|[1-5][0-9]|6([0-3]))).png)$ {
+            alias /var/www/xkcd-map.rent-a-geek.de/converted/$1;
+            error_page 404 =200 /white.png;
+            expires max;
+        }
+
+        location ~ ^/converted/((8-[0-9]*-((([0-9])|[1-9][0-9])|1([01][0-9]|2([0-7])))).png)$ {
+            alias /var/www/xkcd-map.rent-a-geek.de/converted/$1;
+            error_page 404 =200 /white.png;
+            expires max;
+        }
+
+        location ~ ^/converted/((9-[0-9]*-(((([0-9]))|([1-9])([0-9]))|(1)([0-9][0-9])|2(([0-4])([0-9])|5(([0-5]))))).png)$ {
+            alias /var/www/xkcd-map.rent-a-geek.de/converted/$1;
+            error_page 404 =200 /white.png;
+            expires max;
+        }
+
+        location ~ ^/converted/((10-[0-9]*-(((([0-9]))|([1-9])([0-9]))|([1-4])([0-9][0-9])|5((0)([0-9])|1(([01]))))).png)$ {
+            alias /var/www/xkcd-map.rent-a-geek.de/converted/$1;
+            error_page 404 =200 /white.png;
+            expires max;
+        }
+
+        location ~ ^/converted/(.*)$ {
+            alias /var/www/xkcd-map.rent-a-geek.de/converted/$1;
+            error_page 404 =200 /black.png;
+            expires max;
+        }
+
+        location / {
+            alias /var/www/xkcd-map.rent-a-geek.de/;
+        }
+    }
+

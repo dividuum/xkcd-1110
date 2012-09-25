@@ -1,0 +1,87 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4.4/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet-0.4.4/leaflet.js"></script>
+    <script src="/leaflet-hash.js"></script>
+    <title>XKCD 1110 in a zoomable version - visualization created by dividuum</title>
+    <style type="text/css">
+        #social {
+            position:absolute;bottom:25px;right:0px;z-index:10000px;
+        }
+        .list {
+            overflow:auto;margin:3px;padding:0px;
+        }
+        .list li { 
+            list-style: none; float: left; margin-left: 20px; 
+        }
+        .leaflet-container img { 
+            image-rendering: optimizeSpeed; 
+        } /* thanks chrismorgan */
+    </style>
+  </head>
+  <body style='background-color:#FFF;padding:0;margin:0;'>
+    <img id='intro' style='position:absolute;left:50%;margin-left:-268px;z-index:100000;top:20px;width:536px;height215px;' src='/intro.png'>
+    <div id='map' style='height:100%;'></div>
+    <div id='social'>
+        <ul class='list'>
+            <li><span class="fb-like" data-href="http://xkcd-map.rent-a-geek.de" data-send="false" data-layout="button_count" data-show-faces="true"></span></li>
+            <li><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://xkcd-map.rent-a-geek.de" data-via="dividuum" data-hashtags="xkcd">Tweet</a></li>
+            <li><div class="g-plusone" data-size="medium" data-href="http://xkcd-map.rent-a-geek.de"></div></li>
+        </ul>
+    </div>
+    <div id="fb-root"></div>
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-34941533-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = 'http://www.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+      var map = L.map('map').setView([1.1,0.2], 10);
+
+      function hide_intro() {
+          document.getElementById('intro').style.display = 'none';
+      }
+      if (window.location.hash.length > 0) {
+          hide_intro();
+      } else {
+          map.on('dragstart', hide_intro);
+      }
+
+      var hash = new L.Hash();
+      hash.init(map);
+
+      var layer_url = 'http://xkcd{s}.rent-a-geek.de/converted/{z}-{x}-{y}.png';
+
+      L.tileLayer(layer_url, {
+          maxZoom: 10,
+          noWrap: true,
+          subdomains: "12",
+          attribution: '<span style="font-size: 15px;">A zoomable visualization of <a href="http://xkcd.com/1110/">xkcd - Click and Drag</a>. This visualization was created by <a href="https://twitter.com/dividuum">@dividuum</a></span>',
+      }).addTo(map);
+
+      // twitter
+      !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+
+      // facebook
+      (function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+          fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+
+      // google+
+      (function() {
+          var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+          po.src = 'https://apis.google.com/js/plusone.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>
+  </body>
+</html>
